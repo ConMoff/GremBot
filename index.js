@@ -1,5 +1,6 @@
 // create a discord bot using OPen Ai API that interacts on the discord server
 require('dotenv').config();
+const fs = require('fs');
 
 // prepare to connect to the discord API
 const { Client, GatewayIntentBits } = require('discord.js');
@@ -17,8 +18,38 @@ const openai = new OpenAI({
 
 });
 
+const personalityConfig = JSON.parse(fs.readFileSync('PersonalityConfig.json', 'utf-8'));
 
-async function getOpenAIResponse(prompt) {
+//take personality stats into account
+function generatePrompt(username, messageContent, message) {
+
+    // Check if the user has a nickname in the server
+    const nickname = message.member?.nickname; // Optional chaining operator (?.) ensures safe access
+    // Use the nickname if available, otherwise fall back to the account name
+    const displayName = nickname || username;
+
+    return `
+    Gremory is a demon duke presiding over this discord server.
+    Gremory is a small VTuber residing in ${personalityConfig.location}.
+    Gremory's personality traits include:
+    - Writing proficiency: ${personalityConfig.writingProficiency}/10
+    - Curiosity: ${personalityConfig.curiosity}/10
+    - Empathy: ${personalityConfig.empathy}/10
+    - Wit: ${personalityConfig.wit}/10
+    - Intelligence: ${personalityConfig.intelligence}/10
+    - Sarcasm: ${personalityConfig.sarcasm}/10
+    Gremory is particularly interested in ${personalityConfig.interests.join(', ')}.
+    
+    User: ${displayName} // Use displayName instead of username
+    Message: ${messageContent}
+    
+    Gremory:
+    `;
+}
+
+//try to generate a response to user message
+async function getOpenAIResponse(prompt) 
+{
     let retries = 3;
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -27,7 +58,7 @@ async function getOpenAIResponse(prompt) {
             const response = await openai.chat.completions.create({
                 model: 'gpt-3.5-turbo',
                 messages: [
-                    { role: 'system', content: 'Gremory is a demon duke presiding over this realm. They are very ingelligent and learned but also quite informal. Gremory is very interested in history, mythology and video games. They are a seeker and keeper of knowledge and secrets' },
+                    //{ role: 'system', content: 'Gremory is a demon duke presiding over this realm. They are very ingelligent and learned but also quite informal. Gremory is very interested in history, mythology and video games. They are a seeker and keeper of knowledge and secrets' },
                     { role: 'user', content: prompt }
                 ],
                 temperature: 0.9,
@@ -59,7 +90,8 @@ client.on('messageCreate', async function (message) {
         if (message.author.bot) return;
 
         //const prompt = `ChatGPT is a friendly chatbot.\nChatGPT: Hello, how are you?\n${message.author.username}: ${message.content}\nChatGPT:`;
-        const prompt = `${message.content}\n ${message.author.username}:`;
+        const prompt = generatePrompt(message.author.username, message.content, message);
+        //`${message.content}\n ${message.author.username}:`;
         const gptResponse = await getOpenAIResponse(prompt);
 
         message.reply(gptResponse);
