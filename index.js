@@ -111,9 +111,7 @@ async function getOpenAIResponse(prompt)
 };
  
 //test
-const specificChannelID = 1244769955023425577;
-//const specificChannelID = 1243529326906048553;
-
+const specificChannelID = process.env.CHAT_CHANNEL;
 
 // Check for when a message on discord is sent
 client.on('messageCreate', async function (message) {
