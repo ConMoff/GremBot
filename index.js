@@ -78,10 +78,10 @@ async function getOpenAIResponse(prompt)
     throw new Error('Exceeded maximum retries');
 }
  
-//bot-testing
-//const specificChannelID = 1243529326906048553;
 //test
-const specificChannelID = 1244769955023425577
+const specificChannelID = 1243529326906048553;
+//bot-testing
+//const specificChannelID = 1244769955023425577
 ;
 
 // Check for when a message on discord is sent
