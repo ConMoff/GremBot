@@ -87,7 +87,8 @@ const specificChannelID = 1244769955023425577;
 client.on('messageCreate', async function (message) {
     try {
 
-        if (message.channel.id === specificChannelID && message.channel.id != specificChannelID) return;
+        //if (message.channel.id === specificChannelID && message.channel.id != specificChannelID) return;
+        if (message.channel.id !== specificChannelID) return;
         console.log(message.author.username, 'User Message:', message.content, "\n In channel:", message.channel.id);
         //if (message.channel.id != specificChannelID) return;
         if (message.author.bot) return;
