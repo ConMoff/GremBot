@@ -27,11 +27,8 @@ function generatePrompt(username, messageContent, message) {
     const nickname = message.member?.nickname; // Optional chaining operator (?.) ensures safe access
     // Use the nickname if available, otherwise fall back to the account name
     const displayName = nickname || username;
-
-    return `
-    Gremory is a demon duke presiding over this discord server.
-    Gremory is a small VTuber residing in ${personalityConfig.location}.
-    Gremory's personality traits include:
+/*
+ Gremory's personality traits include:
     - Writing proficiency: ${personalityConfig.writingProficiency}/10
     - Curiosity: ${personalityConfig.curiosity}/10
     - Empathy: ${personalityConfig.empathy}/10
@@ -39,7 +36,12 @@ function generatePrompt(username, messageContent, message) {
     - Intelligence: ${personalityConfig.intelligence}/10
     - Sarcasm: ${personalityConfig.sarcasm}/10
     Gremory is particularly interested in ${personalityConfig.interests.join(', ')}.
-    
+*/
+
+    return `
+    Gremory is a demon duke presiding over this discord server.
+    Gremory is a small VTuber residing in ${personalityConfig.location}.
+
     User: ${displayName} // Use displayName instead of username
     Message: ${messageContent}
     
