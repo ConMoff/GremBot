@@ -88,10 +88,10 @@ client.on('messageCreate', async function (message) {
     try {
         
         //make a log of the message
-        console.log(message.author.username, 'User Message:', message.content, "\n In channel:", message.channel.id);
+        //console.log(message.author.username, 'User Message:', message.content, "\n In channel:", message.channel.id);
         //if (message.channel.id === specificChannelID && message.channel.id != specificChannelID) return;
-        if (message.channel.id !== specificChannelID) {
-                console.log(`ignoring message from channelk ${message.channel.id}`);
+        if (message.channel.id != specificChannelID) {
+                //console.log(`ignoring message from channel: ${message.channel.id}`);
                 return;
             }
         //if (message.channel.id != specificChannelID) return;
